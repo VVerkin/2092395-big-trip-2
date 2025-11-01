@@ -9,6 +9,9 @@ export default class TripInfoPresenter {
   constructor({ container, pointsModel }) {
     this.#container = container;
     this.#pointsModel = pointsModel;
+
+    // Подписываемся на изменения модели
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
   init() {
@@ -43,4 +46,11 @@ export default class TripInfoPresenter {
     // Рендерим компонент в переданный контейнер
     render(this.#tripInfoComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
+
+  #handleModelEvent = (updateType) => {
+    // Обновляем информацию при любых изменениях точек маршрута
+    if (updateType === 'MINOR' || updateType === 'MAJOR' || updateType === 'PATCH') {
+      this.update();
+    }
+  };
 }

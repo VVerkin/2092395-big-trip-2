@@ -125,10 +125,19 @@ export default class PointsModel extends Observable {
       return '';
     }
 
-    const startFormatted = new Date(startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    const endFormatted = new Date(endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const startFormatted = this.#formatDateForHeader(startDate);
+    const endFormatted = this.#formatDateForHeader(endDate);
 
     return `${startFormatted} — ${endFormatted}`;
+  }
+
+  #formatDateForHeader(dateString) {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+
+    return `${day} ${month}`;
   }
 
   getTotalCost() {
